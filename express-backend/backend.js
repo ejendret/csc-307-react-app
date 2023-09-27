@@ -54,9 +54,24 @@ app.get('/users/:id', (req, res) => {
     }
 });
 
+app.delete('/users/:id', (req, res) => {
+    const id = req.params['id'];
+    let result = findIndexById(id);
+    if (result === undefined || result.length == 0)
+	res.status(404).send('Resource not found.');
+    else {
+    	users['users_list'].splice(result, 1);
+    }
+});
+
 // Helper
 function findUserById(id) {
     return users['users_list'].find( (user) => user['id'] === id); // or line below
+    //return users['users_list'].filter( (user) => user['id'] === id);
+}
+
+function findIndexById(id){
+    return users['users_list'].findIndex( (user) => user['id'] === id); // or line below
     //return users['users_list'].filter( (user) => user['id'] === id);
 }
 
