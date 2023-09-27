@@ -7,11 +7,13 @@ const port = 8000;
 app.use(express.json());
 
 // Root Endpoint
+// Get
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
 // User Endpoint
+// Get
 app.get('/users', (req, res) => {
     const name = req.query.name;
     if (name != undefined){
@@ -24,8 +26,20 @@ app.get('/users', (req, res) => {
     }
 });
 
+// Post
+app.post('/users', (req, res) => {
+    const userToAdd = req.body;
+    addUser(userToAdd);
+    res.status(200).end();
+});
+
+// Helper
 const findUserByName = (name) => { 
     return users['users_list'].filter( (user) => user['name'] === name); 
+}
+
+function addUser(user){
+    users['users_list'].push(user);
 }
 
 // User ID Endpoints
@@ -40,6 +54,7 @@ app.get('/users/:id', (req, res) => {
     }
 });
 
+// Helper
 function findUserById(id) {
     return users['users_list'].find( (user) => user['id'] === id); // or line below
     //return users['users_list'].filter( (user) => user['id'] === id);
