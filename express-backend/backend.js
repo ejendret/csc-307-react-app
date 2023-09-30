@@ -46,7 +46,7 @@ app.post('/users', (req, res) => {
     const uniqueId = uuidv4();
     userToAdd.id = uniqueId;
     addUser(userToAdd);
-    res.status(201).end();
+    res.status(201).send(userToAdd).end();
 });
 
 // Helper
@@ -84,6 +84,7 @@ app.delete('/users/:id', (req, res) => {
         res.status(404).send('Resource not found.');
     else {
         users['users_list'].splice(result, 1);
+        res.status(204).end();
     }
 });
 

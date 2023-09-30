@@ -7,11 +7,36 @@ import Form from './Form';
 function MyApp() {
   const [characters, setCharacters] = useState([]);
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index
-    });
-    setCharacters(updated);
+  async function removeOneCharacter(index) {
+    try {
+      // Get the user to delete and make a request using id
+      const userToDelete = characters[index];
+      const response = await axios.delete('http://localhost:8000/users/' + userToDelete.id)
+
+      // On success, filter the character from frontend list and call setCharacters
+      if (response.status === 204) {
+        const updated = characters.filter((character, i) => {
+          return character.id !== userToDelete.id
+        });
+        setCharacters(updated);
+
+        // Don't think I'm actually using this but it's here
+        return updated;
+      }
+      // Shouldn't happen since non-existent users shouldn't show on front-end
+      else if (response.satus === 404) {
+        // Got this from ChatGPT, understanding is that it will trigger the catch error and log error to console, wherever that is
+        throw new Error('Resource not found');
+      }
+      else {
+        throw new Error('Failed to delete user');
+      }
+    }
+    catch (error) {
+      // Just copying fetchAll format
+      console.log(error)
+      return false;
+    }
   }
 
   // Backend link functions
@@ -37,6 +62,9 @@ function MyApp() {
   async function makePostCall(person) {
     try {
       const response = await axios.post('http://localhost:8000/users', person);
+
+      // Access the backend-generated id and append that to person
+      person.id = response.data.id;
       return response;
     }
     catch (error) {
