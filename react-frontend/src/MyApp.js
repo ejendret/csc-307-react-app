@@ -16,7 +16,7 @@ function MyApp() {
       // On success, filter the character from frontend list and call setCharacters
       if (response.status === 204) {
         const updated = characters.filter((character, i) => {
-          return character.id !== userToDelete.id
+          return character._id !== userToDelete._id
         });
         setCharacters(updated);
 
@@ -64,7 +64,7 @@ function MyApp() {
       const response = await axios.post('http://localhost:8000/users', person);
 
       // Access the backend-generated id and append that to person
-      person.id = response.data.id;
+      person._id = response.data._id;
       return response;
     }
     catch (error) {
