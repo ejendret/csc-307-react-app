@@ -11,7 +11,7 @@ function MyApp() {
     try {
       // Get the user to delete and make a request using id
       const userToDelete = characters[index];
-      const response = await axios.delete('http://localhost:8000/users/' + userToDelete.id)
+      const response = await axios.delete('http://localhost:8000/users/' + userToDelete._id)
 
       // On success, filter the character from frontend list and call setCharacters
       if (response.status === 204) {

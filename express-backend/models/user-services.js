@@ -28,15 +28,6 @@ async function getUsers(name, job) {
   return result;
 }
 
-async function findUserById(id) {
-  try {
-    return await userModel.findById(id);
-  } catch (error) {
-    console.log(error);
-    return undefined;
-  }
-}
-
 async function addUser(user) {
   try {
     const userToAdd = new userModel(user);
@@ -45,6 +36,24 @@ async function addUser(user) {
   } catch (error) {
     console.log(error);
     return false;
+  }
+}
+
+async function deleteUser(id) {
+  try {
+    return await userModel.findByIdAndDelete(id);
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+}
+
+async function findUserById(id) {
+  try {
+    return await userModel.findById(id);
+  } catch (error) {
+    console.log(error);
+    return undefined;
   }
 }
 
@@ -63,6 +72,7 @@ async function findUserByNameAndJob(name, job) {
 export default {
   addUser,
   getUsers,
+  deleteUser,
   findUserById,
   findUserByName,
   findUserByJob,
